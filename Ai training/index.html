@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSV Digital Twin - Control Tower 2030</title>
+    <style>
+        :root {
+            --dsv-blue: #002B49;
+            --dsv-accent: #0082C8;
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+            --text-sub: #94A3B8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: var(--dsv-blue);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 1px solid #334155;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #FFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            background-color: var(--dsv-accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .menu-item.active, .menu-item:hover {
+            background-color: var(--dsv-accent);
+            color: #FFF;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .status-badge {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--success);
+        }
+
+        /* 8 Data Streams Indicator */
+        .streams-bar {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #334155;
+        }
+
+        .stream-pill {
+            background: #0F172A;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            border-left: 3px solid var(--dsv-accent);
+        }
+
+        /* Grid Dashboard */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        /* 4 Visibility Section (Predict & AI Action) */
+        .ai-recommend-box {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--dsv-accent);
+            position: relative;
+        }
+
+        .ai-badge {
+            background-color: var(--dsv-accent);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .visibility-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .v-step {
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--dsv-accent);
+        }
+
+        .v-step h4 {
+            margin: 0 0 5px 0;
+            font-size: 0.8rem;
+            color: var(--dsv-accent);
+        }
+
+        .v-step p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        /* Simulation Controls */
+        .sim-btn {
+            background-color: var(--dsv-accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .sim-btn:hover {
+            background-color: #0066a0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="brand">DSV <span>Twin '30</span></div>
+        <ul class="menu-list">
+            <li class="menu-item active">🌐 Control Tower</li>
+            <li class="menu-item">☀️ Solar & Energy</li>
+            <li class="menu-item">📦 Inventory & WMS</li>
+            <li class="menu-item">🤖 AI Agent (P&L / SLA)</li>
+            <li class="menu-item">🧪 Scenario Simulator</li>
+            <li class="menu-item">🧪 Future Readiness Scale</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Smart Warehouse Digital Twin</h1>
+                <span style="color: var(--text-sub); font-size: 0.85rem;">Location: DSV Wharehouse 01 (Real-time Sync)</span>
+            </div>
+            <div class="status-badge">● AI Autonomous Mode Active</div>
+        </div>
+
+        <!-- 8 Data Streams Status Bar -->
+        <div class="streams-bar">
+            <span style="font-size: 0.8rem; font-weight: bold;">8 Connected Streams:</span>
+            <div class="stream-pill">☀️ Solar</div>
+            <div class="stream-pill">⚡ Energy</div>
+            <div class="stream-pill">📦 WMS/TMS</div>
+            <div class="stream-pill">🌡️ IoT Sensors</div>
+            <div class="stream-pill">💰 Financial P&L</div>
+            <div class="stream-pill">📚 Knowledge Base</div>
+            <div class="stream-pill">📈 Demand</div>
+            <div class="stream-pill">👷 Workforce</div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="grid-container">
+            
+            <div class="card">
+                <div class="card-title">Solar Power Output <span>☀️</span></div>
+                <div class="metric-value">482 <span style="font-size: 1rem;">kW</span></div>
+                <span style="color: var(--success); font-size: 0.8rem;">↑ 12% vs predicted</span>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Energy Cost Savings <span>⚡</span></div>
+                <div class="metric-value">$2,450 <span style="font-size: 1rem;">/day</span></div>
+                <span style="color: var(--success); font-size: 0.8rem;">↓ 22% Peak Reduction</span>
+            </div>
+
+            <div class="card">
+                <div class="card-title">SLA Fulfillment Rate <span>🎯</span></div>
+                <div class="metric-value">99.8%</div>
+                <span style="color: var(--success); font-size: 0.8rem;">On Track</span>
+            </div>
+
+            <!-- AI 4-Level Visibility Box (Highlight) -->
+            <div class="card ai-recommend-box">
+                <div class="card-title">
+                    <span>AI Prescriptive Engine (Live Reasoning)</span>
+                    <span class="ai-badge">AI RECOMMENDATION</span>
+                </div>
+
+                <div class="visibility-steps">
+                    <div class="v-step">
+                        <h4>1. What Happened</h4>
+                        <p>Cloud cover detected at 14:00. Solar drop predicted (-35%).</p>
+                    </div>
+                    <div class="v-step">
+                        <h4>2. Why It Happened</h4>
+                        <p>Sudden weather shift combined with 500 express orders.</p>
+                    </div>
+                    <div class="v-step">
+                        <h4>3. What Will Happen</h4>
+                        <p>Grid energy cost spike in 2 hrs (+40%) if unmanaged.</p>
+                    </div>
+                    <div class="v-step" style="border-left-color: var(--success);">
+                        <h4>4. AI Recommended Action</h4>
+                        <p><strong>Switch to Battery B + Reroute AGVs.</strong> Saves $1,200.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <span style="font-size: 0.8rem; color: var(--text-sub);">Simulation Confidence: <strong>96.4%</strong></span>
+                    <div>
+                        <button class="sim-btn" onclick="alert('Simulation executed! Fleet and battery usage updated.')">Approve & Execute AI Action</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulator Widget -->
+            <div class="card">
+                <div class="card-title">What-If Simulator <span>🧪</span></div>
+                <p style="font-size: 0.8rem; color: var(--text-sub); margin: 0;">Simulate upcoming scenarios:</p>
+                <select style="background: #0F172A; color: white; padding: 8px; border-radius: 6px; border: 1px solid #334155;">
+                    <option>Scenario A: +200% Order Surge Tomorrow</option>
+                    <option>Scenario B: Solar Grid Outage (2 Hours)</option>
+                </select>
+                <button class="sim-btn" style="background-color: transparent; border: 1px solid var(--dsv-accent);" onclick="alert('Running Simulation Engine...')">Run Simulation</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
