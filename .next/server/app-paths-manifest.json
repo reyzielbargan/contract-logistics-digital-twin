@@ -1,7 +1,4 @@
 {
-  "/solar/page": "app/solar/page.js",
-  "/Recap/page": "app/Recap/page.js",
   "/page": "app/page.js",
-  "/inventory/page": "app/inventory/page.js",
-  "/ai-agent/page": "app/ai-agent/page.js"
+  "/Recap/page": "app/Recap/page.js"
 }
