@@ -1,6 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { 
+  Bot, 
+  DollarSign, 
+  Target, 
+  TrendingUp, 
+  Zap, 
+  MessageSquare 
+} from 'lucide-react';
 
 interface ChatMessage {
   sender: 'user' | 'ai';
@@ -95,8 +103,9 @@ export default function AiAgentPage() {
         
         {/* Metric Summary Cards */}
         <div className="card">
-          <div className="card-title">
-            Autonomous Actions Today <span>🤖</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>Autonomous Actions Today</span>
+            <Bot size={18} color="#3B82F6" />
           </div>
           <div className="metric-value">142</div>
           <span style={{ color: 'var(--success)', fontSize: '0.85rem' }}>
@@ -105,8 +114,9 @@ export default function AiAgentPage() {
         </div>
 
         <div className="card">
-          <div className="card-title">
-            Cost Saved Today <span>💰</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>Cost Saved Today</span>
+            <DollarSign size={18} color="#10B981" />
           </div>
           <div className="metric-value">$3,840</div>
           <span style={{ color: 'var(--success)', fontSize: '0.85rem' }}>
@@ -115,8 +125,9 @@ export default function AiAgentPage() {
         </div>
 
         <div className="card">
-          <div className="card-title">
-            SLA Impact Score <span>🎯</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>SLA Impact Score</span>
+            <Target size={18} color="#F59E0B" />
           </div>
           <div className="metric-value">99.8%</div>
           <span style={{ color: 'var(--success)', fontSize: '0.85rem' }}>
@@ -126,9 +137,10 @@ export default function AiAgentPage() {
 
         {/* Visual Chart 1: Hourly Cost Savings Trend */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
-          <div className="card-title" style={{ marginBottom: '12px' }}>
-            <span>📈 Real-Time Hourly Savings Trend ($)</span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-sub)' }}>Today's Cumulative</span>
+          <div className="card-title" style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <TrendingUp size={18} color="#3B82F6" />
+            <span>Real-Time Hourly Savings Trend ($)</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-sub)', marginLeft: 'auto' }}>Today's Cumulative</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', height: '110px', gap: '16px', paddingTop: '10px' }}>
             {hourlySavings.map((item, index) => {
@@ -156,8 +168,9 @@ export default function AiAgentPage() {
 
         {/* Visual Chart 2: SLA & Risk Distribution */}
         <div className="card">
-          <div className="card-title" style={{ marginBottom: '12px' }}>
-            <span>⚡ SLA & Risk Performance</span>
+          <div className="card-title" style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Zap size={18} color="#F59E0B" />
+            <span>SLA & Risk Performance</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center', height: '110px' }}>
             <div>
@@ -189,9 +202,10 @@ export default function AiAgentPage() {
         className="card"
         style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', height: '360px' }}
       >
-        <div className="card-title" style={{ borderBottom: '1px solid #334155', paddingBottom: '10px' }}>
-          <span>💬 AI Agent Co-Pilot (Ask about Dashboard)</span>
-          <span className="ai-badge">LIVE CHAT</span>
+        <div className="card-title" style={{ borderBottom: '1px solid #334155', paddingBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <MessageSquare size={18} color="#3B82F6" />
+          <span>AI Agent Co-Pilot (Ask about Dashboard)</span>
+          <span className="ai-badge" style={{ marginLeft: 'auto' }}>LIVE CHAT</span>
         </div>
 
         {/* Message Log Area */}
@@ -211,7 +225,7 @@ export default function AiAgentPage() {
               style={{
                 alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
                 maxWidth: '75%',
-                backgroundColor: msg.sender === 'user' ? 'var(--dsv-accent)' : '#0F172A',
+                backgroundColor: msg.sender === 'user' ? 'var(--dsv-accent)' : '#ffffffff',
                 color: '#000000ff',
                 padding: '10px 14px',
                 borderRadius: '10px',
@@ -251,11 +265,11 @@ export default function AiAgentPage() {
             onChange={(e) => setInput(e.target.value)}
             style={{
               flex: 1,
-              backgroundColor: '#0F172A',
+              backgroundColor: '#ffffffff',
               border: '1px solid #334155',
               borderRadius: '6px',
               padding: '10px 14px',
-              color: '#FFF',
+              color: '#050505ff',
               outline: 'none',
               fontSize: '0.9rem',
             }}

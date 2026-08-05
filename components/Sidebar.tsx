@@ -2,20 +2,29 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { 
+  Globe, 
+  Sun, 
+  Package, 
+  Bot, 
+  FlaskConical, 
+  Save 
+} from 'lucide-react';
 
 export default function Sidebar() {
   const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname();
 
-  // ปรับ href ให้ตรงตามชื่อโฟลเดอร์ใน app/ เป๊ะๆ
   const navItems = [
-    { name: 'Control Tower', href: '/', icon: '🌐' },
-    { name: 'Solar & Energy', href: '/solar', icon: '☀️' },
-    { name: 'Inventory & WMS', href: '/inventory', icon: '📦' },
-    { name: 'AI Agent (P&L / SLA)', href: '/ai-agent', icon: '🤖' },
-    { name: 'Scenario Simulator', href: '/scenario-simulator', icon: '🧪' },
-    { name: 'Future Readiness Scale', href: '/future-readiness', icon: '💾' },
+    { name: 'Control Tower', href: '/', icon: <Globe size={20} /> },
+    { name: 'Solar & Energy', href: '/solar', icon: <Sun size={20} /> },
+    { name: 'Inventory & WMS', href: '/inventory', icon: <Package size={20} /> },
+    { name: 'AI Agent (P&L / SLA)', href: '/ai-agent', icon: <Bot size={20} /> },
+    { name: 'Scenario Simulator', href: '/scenario-simulator', icon: <FlaskConical size={20} /> },
+    { name: 'Future Readiness Scale', href: '/future-readiness', icon: <Save size={20} /> },
+    { name: 'Recap', href: '/Recap', icon: <Save size={20} /> },
   ];
 
   return (
@@ -33,7 +42,7 @@ export default function Sidebar() {
         style={{
           width: isHovered ? '240px' : '64px',
           height: 'calc(100vh - 32px)',
-          backgroundColor: '#ffffffff',
+          backgroundColor: '#ffffff',
           borderRadius: '16px',
           border: '1px solid #1E293B',
           boxShadow: isHovered
@@ -52,23 +61,38 @@ export default function Sidebar() {
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '12px 8px',
+            padding: '8px 4px',
             marginBottom: '12px',
             minHeight: '40px',
-            gap: '12px',
             borderBottom: '1px solid #1E293B',
           }}
         >
           <div
             style={{
-              fontWeight: '900',
-              fontSize: '1.2rem',
-              color: '#3B82F6',
-              minWidth: '32px',
-              textAlign: 'center',
+              width: '100%',
+              display: 'flex',
+              justifyContent: isHovered ? 'flex-start' : 'center',
+              alignItems: 'center',
+              paddingLeft: isHovered ? '8px' : '0px',
+              transition: 'all 0.3s ease',
             }}
           >
-            DSV
+            <div
+              style={{
+                width: isHovered ? '90px' : '32px',
+                height: isHovered ? '32px' : '20px',
+                position: 'relative',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
+              <Image
+                src="/picture/Logo_blue.svg"
+                alt="DSV Logo"
+                fill
+                priority
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
           </div>
         </div>
 
@@ -95,7 +119,6 @@ export default function Sidebar() {
               >
                 <span
                   style={{
-                    fontSize: '1.2rem',
                     minWidth: '24px',
                     display: 'flex',
                     alignItems: 'center',

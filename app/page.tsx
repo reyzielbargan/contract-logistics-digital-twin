@@ -3,7 +3,20 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
-import { Weight } from 'lucide-react';
+import { 
+  Sun, 
+  Truck, 
+  Package, 
+  Bot, 
+  DollarSign, 
+  Zap, 
+  Radio, 
+  BookOpen, 
+  TrendingUp, 
+  Target, 
+  Rocket,
+  FlaskConical
+} from 'lucide-react';
 
 interface WarehouseNode {
   id: string;
@@ -20,7 +33,7 @@ interface ZoneInfo {
   type: string;
   status: 'Optimal' | 'Warning' | 'Critical';
   metrics: { label: string; value: string }[];
-  icon: string;
+  icon: React.ReactNode;
   color: string;
 }
 
@@ -30,7 +43,7 @@ const WAREHOUSE_ZONES: ZoneInfo[] = [
     name: 'Rooftop Solar Array & BESS',
     type: 'Energy Infrastructure',
     status: 'Optimal',
-    icon: '☀️',
+    icon: <Sun size={20} />,
     color: '#00A79D',
     metrics: [
       { label: 'Generation', value: '645 kW' },
@@ -43,7 +56,7 @@ const WAREHOUSE_ZONES: ZoneInfo[] = [
     name: 'Inbound Receiving & Ingestion',
     type: 'Logistics Dock A-D',
     status: 'Optimal',
-    icon: '🚚',
+    icon: <Truck size={20} />,
     color: '#005EB8',
     metrics: [
       { label: 'Active Docks', value: '4 / 4' },
@@ -56,7 +69,7 @@ const WAREHOUSE_ZONES: ZoneInfo[] = [
     name: 'High-Bay Automated Racking',
     type: 'AS/RS Storage Node',
     status: 'Warning',
-    icon: '📦',
+    icon: <Package size={20} />,
     color: '#F59E0B',
     metrics: [
       { label: 'Capacity', value: '92% Full' },
@@ -69,7 +82,7 @@ const WAREHOUSE_ZONES: ZoneInfo[] = [
     name: 'Autonomous AGV & Sorting Hub',
     type: 'Robotics & Transport',
     status: 'Optimal',
-    icon: '🤖',
+    icon: <Bot size={20} />,
     color: '#3B82F6',
     metrics: [
       { label: 'Active AGVs', value: '24 Fleet' },
@@ -82,7 +95,7 @@ const WAREHOUSE_ZONES: ZoneInfo[] = [
     name: 'Outbound Dispatch & Shipping',
     type: 'Fulfillment & Staging',
     status: 'Optimal',
-    icon: '🚛',
+    icon: <Truck size={20} />,
     color: '#10B981',
     metrics: [
       { label: 'OTIF Rate', value: '99.8%' },
@@ -132,10 +145,7 @@ export default function ControlTowerPage() {
       {/* Header Section */}
       <header className="header">
         <div>
-          <h1>Global Operations Control Tower</h1>
-          <span style={{ color: 'var(--text-sub)', fontSize: '0.85rem' }}>
-            Autonomous Contract Logistics & Enterprise Digital Twin 2030
-          </span>
+          <h1>DSV Composite AI System</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>
@@ -150,12 +160,11 @@ export default function ControlTowerPage() {
       {/* --- 3D INTERACTIVE WAREHOUSE NODE (REPLACED SELECTOR BAR) --- */}
       <div
         style={{
-          backgroundColor: '#0B1426',
+          backgroundColor: '#ffffffff',
           borderRadius: '12px',
-          border: '1px solid #1E3A78',
           padding: '16px',
           marginBottom: '16px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+          boxShadow: '0 4px 10px rgba(130, 130, 130, 0.4)',
         }}
       >
         {/* Top Selection Row */}
@@ -165,7 +174,6 @@ export default function ControlTowerPage() {
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: '14px',
-            borderBottom: '1px solid #1E3A78',
             paddingBottom: '10px',
             flexWrap: 'wrap',
             gap: '10px',
@@ -179,9 +187,8 @@ export default function ControlTowerPage() {
               value={selectedFacility}
               onChange={(e) => setSelectedFacility(e.target.value)}
               style={{
-                backgroundColor: '#0F172A',
-                color: '#FFF',
-                border: '1px solid #334155',
+                backgroundColor: '#ffffffff',
+                color: '#000000ff',
                 padding: '8px 12px',
                 borderRadius: '6px',
                 fontSize: '0.9rem',
@@ -230,7 +237,7 @@ export default function ControlTowerPage() {
               background: 'radial-gradient(circle at center, #0F1C38 0%, #080D1A 100%)',
               borderRadius: '8px',
               padding: '16px',
-              border: '1px solid #1E293B',
+              border: '1px solid #0056e161',
               minHeight: '190px',
               display: 'flex',
               flexDirection: 'column',
@@ -244,8 +251,7 @@ export default function ControlTowerPage() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundImage:
-                  'linear-gradient(to right, rgba(30,58,120,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(30,58,120,0.15) 1px, transparent 1px)',
+                background: '#ffffff',
                 backgroundSize: '20px 20px',
               }}
             />
@@ -256,7 +262,7 @@ export default function ControlTowerPage() {
                 top: '8px',
                 left: '12px',
                 fontSize: '0.75rem',
-                color: '#64748B',
+                color: '#000000ff',
               }}
             >
               Click zone to inspect live floorplan telemetry ↓
@@ -283,11 +289,11 @@ export default function ControlTowerPage() {
                     key={zone.id}
                     onClick={() => setSelectedZone(zone)}
                     style={{
-                      background: isSelected ? `${zone.color}25` : '#131F37',
+                      background: isSelected ? '#afafaf79' : '#ffffffff',
                       border: `2px solid ${isSelected ? zone.color : '#1E3A78'}`,
                       borderRadius: '8px',
                       padding: '10px 4px',
-                      color: '#FFF',
+                      color: '#080808ff',
                       cursor: 'pointer',
                       display: 'flex',
                       flexDirection: 'column',
@@ -300,7 +306,7 @@ export default function ControlTowerPage() {
                       transform: isSelected ? 'translateY(-6px)' : 'translateY(0)',
                     }}
                   >
-                    <span style={{ fontSize: '1.4rem' }}>{zone.icon}</span>
+                    <span>{zone.icon}</span>
                     <span
                       style={{
                         fontSize: '0.7rem',
@@ -383,8 +389,11 @@ export default function ControlTowerPage() {
                     style={{
                       fontSize: '0.9rem',
                       fontWeight: 'bold',
-                      color: '#FFF',
+                      color: '#000',
                       margin: '2px 0 0 0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
                     }}
                   >
                     {selectedZone.icon} {selectedZone.name}
@@ -442,29 +451,29 @@ export default function ControlTowerPage() {
       {/* Data Stream Indicators (FIXED FLEX-WRAP) */}
       <div 
         style={{ 
+          background: '#ffffffff',
           display: 'flex', 
           flexWrap: 'wrap', 
           gap: '10px', 
           marginBottom: '20px', 
           alignItems: 'center',
-          background: 'var(--sidebar-bg)',
           padding: '12px 16px',
           borderRadius: '10px',
           boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
         }}
       >
-        <span style={{ fontSize: '0.8rem', color: '#ffff', fontWeight: 'bold', marginRight: '4px' }}>
+        <span style={{ fontSize: '0.8rem', color: '#000000ff', fontWeight: 'bold', marginRight: '4px' }}>
           8 Data Streams:
         </span>
         {[
-          { label: 'Solar Gen', icon: '☀️', color: '#F59E0B' },
-          { label: 'Energy Draw', icon: '⚡', color: '#EF4444' },
-          { label: 'WMS / TMS', icon: '📦', color: '#3B82F6' },
-          { label: 'IoT Sensors', icon: '📡', color: '#8B5CF6' },
-          { label: 'Financial P&L', icon: '💰', color: '#10B981' },
-          { label: 'Knowledge Base', icon: '📚', color: '#06B6D4' },
-          { label: 'Client Demand', icon: '📈', color: '#EC4899' },
-          { label: 'Workforce & AGVs', icon: '🤖', color: '#F97316' },
+          { label: 'Solar Gen', icon: <Sun size={14} />, color: '#e8a006' },
+          { label: 'Energy Draw', icon: <Zap size={14} />, color: '#EF4444' },
+          { label: 'WMS / TMS', icon: <Package size={14} />, color: '#3B82F6' },
+          { label: 'IoT Sensors', icon: <Radio size={14} />, color: '#8B5CF6' },
+          { label: 'Financial P&L', icon: <DollarSign size={14} />, color: '#10B981' },
+          { label: 'Knowledge Base', icon: <BookOpen size={14} />, color: '#06B6D4' },
+          { label: 'Client Demand', icon: <TrendingUp size={14} />, color: '#EC4899' },
+          { label: 'Workforce & AGVs', icon: <Bot size={14} />, color: '#F97316' },
         ].map((stream, idx) => (
           <div
             key={idx}
@@ -492,8 +501,9 @@ export default function ControlTowerPage() {
         
         {/* Metric 1: Solar Power */}
         <div className="card">
-          <div className="card-title">
-            SOLAR POWER GENERATION <span>☀️</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>SOLAR POWER GENERATION</span>
+            <Sun size={18} color="#F59E0B" />
           </div>
           <div className="metric-value">{current.solar}</div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginTop: '6px' }}>
@@ -507,8 +517,9 @@ export default function ControlTowerPage() {
 
         {/* Metric 2: Contract Margin */}
         <div className="card">
-          <div className="card-title">
-            CONTRACT MARGIN <span>💰</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>CONTRACT MARGIN</span>
+            <DollarSign size={18} color="#3B82F6" />
           </div>
           <div className="metric-value">{current.margin}</div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginTop: '6px' }}>
@@ -522,8 +533,9 @@ export default function ControlTowerPage() {
 
         {/* Metric 3: SLA Fulfillment */}
         <div className="card">
-          <div className="card-title">
-            SLA FULFILLMENT <span>🎯</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>SLA FULFILLMENT</span>
+            <Target size={18} color="#10B981" />
           </div>
           <div className="metric-value">{current.sla}</div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginTop: '6px' }}>
@@ -545,30 +557,30 @@ export default function ControlTowerPage() {
         </div>
 
         <div className="grid-container" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '14px' }}>
-          <div style={{ background: 'var(--sidebar-bg)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
+          <div style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
             <div style={{ fontSize: '0.8rem', color: '#60A5FA', fontWeight: 'bold' }}>1. What Happened</div>
-            <div style={{ fontSize: '0.78rem', color: '#ffff', marginTop: '4px' }}>
+            <div style={{ fontSize: '0.78rem', color: '#080808ff', marginTop: '4px' }}>
               Cloud cover approaching at 14:00. Solar output drop predicted (-35%).
             </div>
           </div>
 
-          <div style={{ background: 'var(--sidebar-bg)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
+          <div style={{  boxShadow: '0 2px 4px rgba(0,0,0,0.1)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
             <div style={{ fontSize: '0.8rem', color: '#60A5FA', fontWeight: 'bold' }}>2. Why It Happened</div>
-            <div style={{ fontSize: '0.78rem', color: '#ffff', marginTop: '4px' }}>
+            <div style={{ fontSize: '0.78rem', color: '#080808ff', marginTop: '4px' }}>
               Sudden localized weather shift combined with 500 VIP express orders.
             </div>
           </div>
 
-          <div style={{ background: 'var(--sidebar-bg)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
+          <div style={{  boxShadow: '0 2px 4px rgba(0,0,0,0.1)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
             <div style={{ fontSize: '0.8rem', color: '#60A5FA', fontWeight: 'bold' }}>3. What Will Happen</div>
-            <div style={{ fontSize: '0.78rem', color: '#ffff', marginTop: '4px' }}>
+            <div style={{ fontSize: '0.78rem', color: '#080808ff', marginTop: '4px' }}>
               Peak electricity tariff trigger in 2 hours ($2,400 cost spike).
             </div>
           </div>
 
-          <div style={{ background: 'var(--sidebar-bg)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
+          <div style={{  boxShadow: '0 2px 4px rgba(0,0,0,0.1)', padding: '12px', borderRadius: '8px', border: '1px solid #334155' }}>
             <div style={{ fontSize: '0.8rem', color: '#10B981', fontWeight: 'bold' }}>4. Recommended Action</div>
-            <div style={{ fontSize: '0.78rem', color: '#ffff', marginTop: '4px' }}>
+            <div style={{ fontSize: '0.78rem', color: '#080808ff', marginTop: '4px' }}>
               Switch to Battery B + Reroute 12 AGVs to VIP Lane.
             </div>
           </div>
@@ -593,15 +605,19 @@ export default function ControlTowerPage() {
       </div>
 
       {/* --- EXECUTIVE NAVIGATION PORTAL --- */}
-      <div className="card-title" style={{ marginBottom: '12px' }}>
-        <span>🚀 Enterprise Navigation Portal (Deep Dive Modules)</span>
+      <div className="card-title" style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Rocket size={18} />
+        <span>Enterprise Navigation Portal (Deep Dive Modules)</span>
       </div>
 
       <div className="grid-container">
         
         <Link href="/solar" style={{ textDecoration: 'none', color: 'inherit' }}>
           <div className="card" style={{ cursor: 'pointer', transition: 'transform 0.2s', height: '100%' }}>
-            <div className="card-title">☀️ Solar & Water Utilities</div>
+            <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Sun size={18} color="#F59E0B" />
+              <span>Solar & Water Utilities</span>
+            </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-sub)', margin: '8px 0' }}>
               Monitor green power generation, BESS storage, and rainwater recycling analytics.
             </p>
@@ -611,7 +627,10 @@ export default function ControlTowerPage() {
 
         <Link href="/ai-agent" style={{ textDecoration: 'none', color: 'inherit' }}>
           <div className="card" style={{ cursor: 'pointer', transition: 'transform 0.2s', height: '100%' }}>
-            <div className="card-title">🤖 AI Agent (P&L / SLA)</div>
+            <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Bot size={18} color="#3B82F6" />
+              <span>AI Agent (P&L / SLA)</span>
+            </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-sub)', margin: '8px 0' }}>
               Interactive AI Co-Pilot chat and hourly financial savings trend.
             </p>
@@ -621,7 +640,10 @@ export default function ControlTowerPage() {
 
         <Link href="/scenario-simulator" style={{ textDecoration: 'none', color: 'inherit' }}>
           <div className="card" style={{ cursor: 'pointer', transition: 'transform 0.2s', height: '100%' }}>
-            <div className="card-title">🧪 Scenario Simulator</div>
+            <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FlaskConical size={18} color="#8B5CF6" />
+              <span>Scenario Simulator</span>
+            </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-sub)', margin: '8px 0' }}>
               Stress-test demand spikes (+50%) and solar outages in Digital Twin sandbox.
             </p>

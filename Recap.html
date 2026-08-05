@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSV Digital Twin - Inventory & WMS 2030</title>
+    <style>
+        :root {
+            --dsv-blue: #002B49;
+            --dsv-accent: #0082C8;
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+            --text-sub: #94A3B8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: var(--dsv-blue);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 1px solid #334155;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #FFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            background-color: var(--dsv-accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .menu-item.active, .menu-item:hover {
+            background-color: var(--dsv-accent);
+            color: #FFF;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .status-badge {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--success);
+        }
+
+        /* 8 Data Streams Indicator */
+        .streams-bar {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #334155;
+        }
+
+        .stream-pill {
+            background: #0F172A;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            border-left: 3px solid var(--dsv-accent);
+        }
+
+        /* Grid Dashboard */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        /* 4 Visibility Section (Predict & AI Action) */
+        .ai-recommend-box {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--dsv-accent);
+            position: relative;
+        }
+
+        .ai-badge {
+            background-color: var(--dsv-accent);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .visibility-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .v-step {
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--dsv-accent);
+        }
+
+        .v-step h4 {
+            margin: 0 0 5px 0;
+            font-size: 0.8rem;
+            color: var(--dsv-accent);
+        }
+
+        .v-step p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        /* Simulation Controls */
+        .sim-btn {
+            background-color: var(--dsv-accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .sim-btn:hover {
+            background-color: #0066a0;
+        }
+
+        /* Progress Bar Helpers */
+        .progress-bg {
+            background: #0F172A;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--dsv-accent);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="brand">DSV <span>Twin '30</span></div>
+        <ul class="menu-list">
+            <li class="menu-item">
+                <a href="index.html">🌐 Control Tower</a>
+            </li>
+            <li class="menu-item">
+                <a href="solar_manage.html">☀️ Solar & Energy</a>
+            </li>
+            <li class="menu-item active">
+                <a href="inventory.html">📦 Inventory & WMS</a>
+            </li>
+            <li class="menu-item">
+                <a href="ai-agent.html">🤖 AI Agent (P&L / SLA)</a>
+            </li>
+            <li class="menu-item">
+                <a href="scenario-simulator.html">🧪 Scenario Simulator</a>
+            </li>
+            <li class="menu-item">
+                <a href="future-readiness.html">💾 Future Readiness Scale</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content (Inventory & WMS View) -->
+    <div class="main-content">
+        
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Inventory & WMS Digital Twin</h1>
+                <span style="color: var(--text-sub); font-size: 0.85rem;">Facility: DSV Automated Logistics Hub - Warehouse 01</span>
+                <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+                    <span style="color: var(--text-sub); font-size: 0.85rem;">Select Warehouse:</span>
+                    <select style="background: #0F172A; color: white; padding: 6px 12px; border-radius: 6px; border: 1px solid #334155;">
+                        <option>Warehouse 01 (Main Hub - Solar Roof Peak)</option>
+                        <option>Warehouse 02 (Cold Chain Unit)</option>
+                        <option>Warehouse 03 (E-Commerce Center)</option>
+                        <option>Warehouse 04 (Air & Sea Cargo Annex)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                <div class="status-badge">● Real-time AI Active</div>
+                <span style="font-size: 0.75rem; color: var(--text-sub);">RFID & Vision-AI Accuracy: 99.98%</span>
+            </div>
+        </div>
+
+        <!-- 8 Data Streams Status Bar (WMS & Inventory Focus) -->
+        <div class="streams-bar">
+            <span style="font-size: 0.8rem; font-weight: bold;">Telemetry Streams:</span>
+            <div class="stream-pill" style="border-left-color: var(--dsv-accent); background: rgba(0, 130, 200, 0.1); color: #FFF;">📦 WMS Live Inventory</div>
+            <div class="stream-pill" style="border-left-color: var(--success); background: rgba(16, 185, 129, 0.1); color: #FFF;">🤖 AGV & Mobile Robot Fleet</div>
+            <div class="stream-pill">🏷️ RFID & Drone Scanning</div>
+            <div class="stream-pill">🌡️ Pallet Condition Sensors</div>
+            <div class="stream-pill">🚛 Inbound Truck ETA (TMS)</div>
+            <div class="stream-pill">📈 Order Picking Wave Sync</div>
+            <div class="stream-pill">📚 Cold Storage Compliance</div>
+            <div class="stream-pill">👷 Workforce Allocation</div>
+        </div>
+
+        <!-- Metric Cards Grid (Top Metrics) -->
+        <div class="grid-container">
+            
+            <div class="card">
+                <div class="card-title">Warehouse Utilization <span>🏗️</span></div>
+                <div class="metric-value">91.4 <span style="font-size: 1rem;">%</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--warning);">⚠️ Near Capacity Threshold</span>
+                    <span style="color: var(--text-sub);">45,700 / 50,000 Slots</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-bar" style="width: 91.4%; background: var(--warning);"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Inventory Accuracy Rate <span>🎯</span></div>
+                <div class="metric-value">99.98 <span style="font-size: 1rem;">%</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--success);">↑ 0.05% Drone Auto-Cycle</span>
+                    <span style="color: var(--text-sub);">Zero Discrepancy</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-bar" style="width: 99.98%; background: var(--success);"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Picking Cycle Time <span>⏱️</span></div>
+                <div class="metric-value">4.2 <span style="font-size: 1rem;">min/order</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--success);">↓ 18% Faster vs Target</span>
+                    <span style="color: var(--text-sub);">1,420 Orders Completed</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-bar" style="width: 82%; background: var(--dsv-accent);"></div>
+                </div>
+            </div>
+
+            <!-- AI 4-Level Visibility Box (Autonomous Slotting & Rescheduling) -->
+            <div class="card ai-recommend-box">
+                <div class="card-title">
+                    <span>AI WMS Prescriptive Engine (Congestion & Slotting Optimization)</span>
+                    <span class="ai-badge">LIVE RE-SLOTTING</span>
+                </div>
+
+                <div class="visibility-steps">
+                    <div class="v-step">
+                        <h4>1. What Happened</h4>
+                        <p>Inbound shipment of 40 high-demand SKU pallets arriving 45 mins early.</p>
+                    </div>
+                    <div class="v-step">
+                        <h4>2. Why It Happened</h4>
+                        <p>Express customs clearance completed faster at port; creates Zone B bottleneck.</p>
+                    </div>
+                    <div class="v-step">
+                        <h4>3. What Will Happen</h4>
+                        <p>AGV queue build-up will delay Outbound SLA for 320 express orders by 18 mins.</p>
+                    </div>
+                    <div class="v-step" style="border-left-color: var(--success);">
+                        <h4>4. AI Recommended Action</h4>
+                        <p><strong>Re-slot to Buffer Rack A4 + Reroute 6 AGVs.</strong> Prevents pick bottleneck.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <span style="font-size: 0.8rem; color: var(--text-sub);">Optimization Confidence: <strong>99.1%</strong> | Time Saved: <strong>24 mins</strong></span>
+                    <div>
+                        <button class="sim-btn" onclick="alert('AI Re-Slotting Executed! AGV routes updated and Buffer Rack A4 allocated.')">Execute Auto-Slotting Action</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Inventory Simulator Box -->
+            <div class="card">
+                <div class="card-title">Inventory Scenario Simulator <span>🧪</span></div>
+                <p style="font-size: 0.8rem; color: var(--text-sub); margin: 0;">Simulate fulfillment & capacity risks:</p>
+                <select style="background: #0F172A; color: white; padding: 8px; border-radius: 6px; border: 1px solid #334155;">
+                    <option>Scenario 1: Black Friday 300% Inbound Surge</option>
+                    <option>Scenario 2: AGV Charging Station Outage (50% Fleet)</option>
+                    <option>Scenario 3: Cold Storage Rack Temperature Anomaly</option>
+                </select>
+                <button class="sim-btn" style="background-color: transparent; border: 1px solid var(--dsv-accent);" onclick="alert('Simulating WMS Throughput & Inventory Capacity...')">Run Inventory Simulation</button>
+            </div>
+
+            <!-- Rack Occupancy Heatmap Visual Card -->
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-title">
+                    <span>Aisle & Rack Density Distribution (Digital Twin View)</span>
+                    <span style="font-size: 0.75rem; color: var(--text-sub);">Real-Time Sensor Map</span>
+                </div>
+                <div style="height: 160px; background: #0F172A; border-radius: 8px; border: 1px solid #334155; padding: 15px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-sub);">
+                        <span>Aisle 01 - 08</span>
+                        <span style="color: var(--success);">■ Normal (&lt;80%)</span>
+                        <span style="color: var(--warning);">■ High Density (85-95%)</span>
+                        <span style="color: var(--danger);">■ Critical (&gt;95%)</span>
+                    </div>
+                    <!-- CSS Grid Heatmap Bar Mockup -->
+                    <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 90px; gap: 10px; padding-top: 10px;">
+                        <div style="width: 12%; height: 75%; background: var(--success); border-radius: 4px;" title="Aisle 1: 75% Occupied"></div>
+                        <div style="width: 12%; height: 85%; background: var(--warning); border-radius: 4px;" title="Aisle 2: 85% Occupied"></div>
+                        <div style="width: 12%; height: 98%; background: var(--danger); border-radius: 4px;" title="Aisle 3: 98% Occupied (Congested)"></div>
+                        <div style="width: 12%; height: 60%; background: var(--success); border-radius: 4px;" title="Aisle 4: 60% Occupied"></div>
+                        <div style="width: 12%; height: 92%; background: var(--warning); border-radius: 4px;" title="Aisle 5: 92% Occupied"></div>
+                        <div style="width: 12%; height: 40%; background: var(--dsv-accent); border-radius: 4px;" title="Aisle 6: 40% Buffer Zone"></div>
+                        <div style="width: 12%; height: 78%; background: var(--success); border-radius: 4px;" title="Aisle 7: 78% Occupied"></div>
+                        <div style="width: 12%; height: 88%; background: var(--warning); border-radius: 4px;" title="Aisle 8: 88% Occupied"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-sub);">
+                        <span>Zone A1</span>
+                        <span>Zone A2</span>
+                        <span>Zone B1 (Fast-Pick)</span>
+                        <span>Zone B2</span>
+                        <span>Zone C1</span>
+                        <span>Zone C2 (Buffer)</span>
+                        <span>Zone D1</span>
+                        <span>Zone D2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warehouse Operations Breakdown -->
+            <div class="card">
+                <div class="card-title">Automation Fleet Status <span>🤖</span></div>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px;">
+                            <span>Active Picking AGVs</span>
+                            <span style="font-weight: bold;">42 / 45 Active</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 93.3%;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px;">
+                            <span>Autonomous Mobile Robots (AMR)</span>
+                            <span style="font-weight: bold;">28 / 30 Active</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 93.3%; background: #38BDF8;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px;">
+                            <span>Automated Scanning Drones</span>
+                            <span style="font-weight: bold;">6 / 6 Active</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 100%; background: var(--success);"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px;">
+                            <span>Robotic Pallet Wrappers</span>
+                            <span style="font-weight: bold;">8 / 8 Active</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 100%; background: var(--warning);"></div></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

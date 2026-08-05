@@ -1,5 +1,14 @@
 'use client';
 
+import { 
+  Sun, 
+  BatteryCharging, 
+  Sprout, 
+  Droplets, 
+  Zap, 
+  Bot 
+} from 'lucide-react';
+
 export default function SolarEnergyPage() {
   // Mock Data for Energy & Water Metrics
   const energyData = {
@@ -39,8 +48,9 @@ export default function SolarEnergyPage() {
       {/* --- TOP METRICS GRID (Solar, Battery, Carbon, Water) --- */}
       <div className="grid-container" style={{ marginBottom: '20px' }}>
         <div className="card">
-          <div className="card-title">
-            CURRENT SOLAR GENERATION <span>☀️</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>CURRENT SOLAR GENERATION</span>
+            <Sun size={18} color="#F59E0B" />
           </div>
           <div className="metric-value">{energyData.currentGen}</div>
           <span style={{ color: 'var(--success)', fontSize: '0.85rem' }}>
@@ -49,8 +59,9 @@ export default function SolarEnergyPage() {
         </div>
 
         <div className="card">
-          <div className="card-title">
-            BATTERY STORAGE (BESS) <span>🔋</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>BATTERY STORAGE (BESS)</span>
+            <BatteryCharging size={18} color="#10B981" />
           </div>
           <div className="metric-value">{energyData.batteryStorage}</div>
           <span style={{ color: 'var(--text-sub)', fontSize: '0.85rem' }}>
@@ -59,8 +70,9 @@ export default function SolarEnergyPage() {
         </div>
 
         <div className="card">
-          <div className="card-title">
-            DAILY CARBON OFFSET <span>🌱</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>DAILY CARBON OFFSET</span>
+            <Sprout size={18} color="#10B981" />
           </div>
           <div className="metric-value">{energyData.carbonOffset}</div>
           <span style={{ color: 'var(--success)', fontSize: '0.85rem' }}>
@@ -69,8 +81,9 @@ export default function SolarEnergyPage() {
         </div>
 
         <div className="card" style={{ borderLeft: '4px solid #3B82F6' }}>
-          <div className="card-title">
-            DAILY WATER CONSUMPTION <span>💧</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>DAILY WATER CONSUMPTION</span>
+            <Droplets size={18} color="#3B82F6" />
           </div>
           <div className="metric-value" style={{ color: '#60A5FA' }}>
             {waterData.dailyConsumption}
@@ -86,9 +99,10 @@ export default function SolarEnergyPage() {
         
         {/* Warehouse Power Consumption Breakdown */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
-          <div className="card-title" style={{ marginBottom: '10x' }}>
-            <span>⚡ Warehouse Power Distribution Breakdown</span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-sub)' }}>Real-time Load</span>
+          <div className="card-title" style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Zap size={18} color="#F59E0B" />
+            <span>Warehouse Power Distribution Breakdown</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-sub)', marginLeft: 'auto' }}>Real-time Load</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -126,8 +140,9 @@ export default function SolarEnergyPage() {
 
         {/* Water Usage & Recycling Analytics */}
         <div className="card">
-          <div className="card-title" style={{ marginBottom: '14px' }}>
-            <span>🚰 Smart Water Management</span>
+          <div className="card-title" style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Droplets size={18} color="#3B82F6" />
+            <span>Smart Water Management</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -158,8 +173,9 @@ export default function SolarEnergyPage() {
 
       {/* --- AI SUSTAINABILITY & RECYCLING INSIGHT --- */}
       <div className="card" style={{ borderLeft: '4px solid #10B981' }}>
-        <div className="card-title" style={{ marginBottom: '8px' }}>
-          <span>🤖 AI Environmental Efficiency Insight</span>
+        <div className="card-title" style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+         <span><Bot size={18} color="#10B981" />
+          AI Environmental Efficiency Insight</span>
           <span className="ai-badge">GREEN OPTIMIZER</span>
         </div>
         <p style={{ fontSize: '0.85rem', color: '#57595bff', lineHeight: '1.5' }}>

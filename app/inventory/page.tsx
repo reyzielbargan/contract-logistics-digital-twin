@@ -1,6 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { 
+  Package, 
+  Ruler, 
+  Bot, 
+  Zap, 
+  Cpu 
+} from 'lucide-react';
 
 interface WarehouseData {
   id: string;
@@ -91,9 +98,9 @@ export default function InventoryWMSPage() {
             value={selectedFacility}
             onChange={(e) => setSelectedFacility(e.target.value)}
             style={{
-              backgroundColor: '#0F172A',
-              color: '#FFF',
-              border: '1px solid #334155',
+              backgroundColor: '#ffffffff',
+              color: '#000000ff',
+              border: '1px solid #d1d1d1ff',
               padding: '8px 12px',
               borderRadius: '6px',
               fontSize: '0.9rem',
@@ -118,7 +125,10 @@ export default function InventoryWMSPage() {
         
         {/* Card 1: Active Pallets & Total Capacity */}
         <div className="card">
-          <div className="card-title">ACTIVE PALLETS 📦</div>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>ACTIVE PALLETS</span>
+            <Package size={18} color="#3B82F6" />
+          </div>
           <div className="metric-value">{current.activePallets}</div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginTop: '6px' }}>
             <span style={{ color: 'var(--text-sub)' }}>Max: {current.totalCapacity}</span>
@@ -140,7 +150,10 @@ export default function InventoryWMSPage() {
 
         {/* Card 2: Floor Area Breakdown (พื้นที่ใช้ไป vs พื้นที่ว่าง) */}
         <div className="card" style={{ borderLeft: '4px solid #3B82F6' }}>
-          <div className="card-title">FLOOR SPACE UTILIZATION 📐</div>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>FLOOR SPACE UTILIZATION</span>
+            <Ruler size={18} color="#3B82F6" />
+          </div>
           <div className="metric-value" style={{ fontSize: '1.8rem' }}>{current.usedArea}</div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginTop: '6px' }}>
             <span style={{ color: '#10B981', fontWeight: 'bold' }}>Remaining Free: {current.freeArea}</span>
@@ -160,7 +173,10 @@ export default function InventoryWMSPage() {
 
         {/* Card 3: AGV Fleet */}
         <div className="card">
-          <div className="card-title">AGV / AMR FLEET 🤖</div>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>AGV / AMR FLEET</span>
+            <Bot size={18} color="#10B981" />
+          </div>
           <div className="metric-value">{current.agvActive} / {current.agvTotal}</div>
           <span style={{ color: 'var(--success)', fontSize: '0.85rem' }}>
             Active Fleet Operation
@@ -169,8 +185,11 @@ export default function InventoryWMSPage() {
 
         {/* Card 4: Throughput Rate */}
         <div className="card">
-          <div className="card-title">PICKING THROUGHPUT ⚡</div>
-          <div className="metric-value" style={{ color: isReslotted ? '#10B981' : '#FFF' }}>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>PICKING THROUGHPUT</span>
+            <Zap size={18} color="#F59E0B" />
+          </div>
+          <div className="metric-value" style={{ color: isReslotted ? '#10B981' : '#000000ff' }}>
             {currentPickingRate.toLocaleString()} <span style={{ fontSize: '0.9rem' }}>picks/hr</span>
           </div>
           <span style={{ color: 'var(--success)', fontSize: '0.85rem' }}>
@@ -182,19 +201,22 @@ export default function InventoryWMSPage() {
 
       {/* --- AI SLOTTING OPTIMIZATION SANDBOX --- */}
       <div className="card" style={{ marginBottom: '20px', borderLeft: '4px solid #10B981' }}>
-        <div className="card-title" style={{ marginBottom: '10px' }}>
-          <span>🤖 AI Dynamic Reslotting Engine</span>
+        <div className="card-title" style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Cpu size={18} color="#10B981" />
+          <span>AI Dynamic Reslotting Engine</span>
           <span className="ai-badge">WMS AI AGENT</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <p style={{ fontSize: '0.85rem', color: '#CBD5E1', margin: 0, maxWidth: '700px' }}>
+          <p style={{ fontSize: '0.85rem', color: '#272727ff', margin: 0, maxWidth: '700px' }}>
             AI analyzes order patterns in {current.name} to optimize pallet slotting, freeing up to 5% unused buffer space and speeding up AGV picking.
           </p>
           <button
             className="sim-btn"
             onClick={() => setIsReslotted(!isReslotted)}
             style={{
-              backgroundColor: isReslotted ? '#10B981' : 'var(--dsv-accent)',
+              color: isReslotted ? '#FFF' : '#000000ff',
+              border: isReslotted ? '1px solid #10B981' : '1px solid #334155',
+              backgroundColor: isReslotted ? '#10B981' : '#ffffffff',
             }}
           >
             {isReslotted ? '✓ AI Reslotting Applied' : 'Execute AI Dynamic Reslotting'}
@@ -204,8 +226,9 @@ export default function InventoryWMSPage() {
 
       {/* --- AGV FLEET LIVE STATUS TABLE --- */}
       <div className="card">
-        <div className="card-title" style={{ marginBottom: '14px' }}>
-          <span>🤖 Active AGV Telemetry ({current.name})</span>
+        <div className="card-title" style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Bot size={18} color="#3B82F6" />
+          <span>Active AGV Telemetry ({current.name})</span>
         </div>
 
         <div style={{ overflowX: 'auto' }}>
@@ -224,21 +247,21 @@ export default function InventoryWMSPage() {
                 <td style={{ padding: '10px', fontWeight: 'bold' }}>AGV-01</td>
                 <td style={{ padding: '10px', color: '#1b1b1bff' }}>Pallet Mover</td>
                 <td style={{ padding: '10px', color: '#10B981', fontWeight: 'bold' }}>92%</td>
-                <td style={{ padding: '10px', color: '#CBD5E1' }}>Moving Pallet #4499 to Bay 12</td>
+                <td style={{ padding: '10px', color: '#1b1b1bff' }}>Moving Pallet #4499 to Bay 12</td>
                 <td style={{ padding: '10px', color: '#10B981' }}>● Active</td>
               </tr>
               <tr style={{ borderBottom: '1px solid #1E293B' }}>
                 <td style={{ padding: '10px', fontWeight: 'bold' }}>AGV-02</td>
                 <td style={{ padding: '10px', color: '#1b1b1bff' }}>High Reach Picker</td>
                 <td style={{ padding: '10px', color: '#10B981', fontWeight: 'bold' }}>85%</td>
-                <td style={{ padding: '10px', color: '#CBD5E1' }}>Picking SKU-8821 in Zone A</td>
+                <td style={{ padding: '10px', color: '#1b1b1bff' }}>Picking SKU-8821 in Zone A</td>
                 <td style={{ padding: '10px', color: '#10B981' }}>● Active</td>
               </tr>
               <tr style={{ borderBottom: '1px solid #1E293B' }}>
                 <td style={{ padding: '10px', fontWeight: 'bold' }}>AGV-03</td>
                 <td style={{ padding: '10px', color: '#1b1b1bff' }}>High Reach Picker</td>
                 <td style={{ padding: '10px', color: '#EF4444', fontWeight: 'bold' }}>18%</td>
-                <td style={{ padding: '10px', color: '#CBD5E1' }}>Returning to Auto-Charge Station</td>
+                <td style={{ padding: '10px', color: '#1b1b1bff' }}>Returning to Auto-Charge Station</td>
                 <td style={{ padding: '10px', color: '#F59E0B' }}>● Charging</td>
               </tr>
             </tbody>

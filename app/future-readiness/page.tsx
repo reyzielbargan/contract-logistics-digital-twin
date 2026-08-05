@@ -1,48 +1,57 @@
 'use client';
 
-import { Weight } from 'lucide-react';
 import { useState } from 'react';
+import { 
+  Bot, 
+  Sun, 
+  Globe, 
+  Sprout, 
+  Rocket, 
+  Flag, 
+  CheckCircle2, 
+  Award 
+} from 'lucide-react';
 
 interface PillarScore {
   title: string;
   score: number;
   max: number;
   status: string;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 export default function FutureReadinessPage() {
   const [upgraded, setUpgraded] = useState(false);
 
-  // Pillar scores
+  // Pillar scores พร้อมไอคอน Lucide
   const pillars: PillarScore[] = [
     {
       title: 'AI & Autonomous Logistics',
       score: upgraded ? 5.0 : 4.9,
       max: 5.0,
       status: 'Fully Autonomous',
-      icon: '🤖',
+      icon: <Bot size={18} color="#3B82F6" />,
     },
     {
       title: 'Solar & Renewable Energy',
       score: upgraded ? 5.0 : 4.7,
       max: 5.0,
       status: 'Near Zero Emission',
-      icon: '☀️',
+      icon: <Sun size={18} color="#F59E0B" />,
     },
     {
       title: 'Digital Twin & Simulation',
       score: upgraded ? 5.0 : 4.8,
       max: 5.0,
       status: 'Real-time Predictive',
-      icon: '🌐',
+      icon: <Globe size={18} color="#3B82F6" />,
     },
     {
       title: 'ESG & Compliance 2030',
       score: upgraded ? 5.0 : 4.8,
       max: 5.0,
       status: 'Target Met',
-      icon: '🌱',
+      icon: <Sprout size={18} color="#10B981" />,
     },
   ];
 
@@ -68,8 +77,11 @@ export default function FutureReadinessPage() {
         
         {/* Main Overall Score Card */}
         <div className="card" style={{ gridColumn: 'span 2', background: 'var(--card-bg)' }}>
-          <div className="card-title">
-            <span>OVERALL MATURITY INDEX</span>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Award size={18} color="#3B82F6" />
+              OVERALL MATURITY INDEX
+            </span>
             <span className="ai-badge">DSV TWIN '30</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginTop: '10px' }}>
@@ -85,7 +97,10 @@ export default function FutureReadinessPage() {
 
         {/* Interactive Upgrade Target Sandbox */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div className="card-title">🚀 2030 Target Simulator</div>
+          <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+           
+            <span> <Rocket size={18} color="#3B82F6" />2030 Target Simulator</span>
+          </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-sub)', margin: '8px 0 14px 0' }}>
             Test impact of full-fleet EV transition & 100% AI automation.
           </p>
@@ -107,7 +122,7 @@ export default function FutureReadinessPage() {
       <div className="grid-container" style={{ marginBottom: '20px' }}>
         {pillars.map((pillar, idx) => (
           <div key={idx} className="card">
-            <div className="card-title" style={{ fontSize: '0.9rem' }}>
+            <div className="card-title" style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span>{pillar.title}</span>
               <span>{pillar.icon}</span>
             </div>
@@ -136,22 +151,33 @@ export default function FutureReadinessPage() {
         
         {/* Milestone Checklist */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
-          <div className="card-title" style={{ marginBottom: '12px' }}>
-            <span style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>🚩 DSV Twin '30 Strategic Milestones</span>
+          <div className="card-title" style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+           
+            <span style={{ fontWeight: 'bold', fontSize: '1.25rem' ,float:'left'}}> <Flag size={20} color="#3B82F6" />DSV Twin '30 Strategic Milestones</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0F172A', padding: '10px 14px', borderRadius: '6px' }}>
-              <span style={{ fontSize: '0.85rem', color: '#FFFF' }} >1. Real-time Digital Twin Integration (Control Tower)</span>
-              <span style={{ color: '#10B981', fontSize: '0.8rem', fontWeight: 'bold' }}>✓ COMPLETED</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #d1d1d1ff', padding: '10px 14px', borderRadius: '6px' }}>
+              <span style={{ fontSize: '0.85rem', color: '#000000ff' }}>1. Real-time Digital Twin Integration (Control Tower)</span>
+              <span style={{ color: '#10B981', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <CheckCircle2 size={14} /> COMPLETED
+              </span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0F172A', padding: '10px 14px', borderRadius: '6px' }}>
-              <span style={{ fontSize: '0.85rem', color: '#FFFF' }}>2. Autonomous P&L & SLA Optimization Agent</span>
-              <span style={{ color: '#10B981', fontSize: '0.8rem', fontWeight: 'bold' }}>✓ COMPLETED</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #d1d1d1ff', padding: '10px 14px', borderRadius: '6px' }}>
+              <span style={{ fontSize: '0.85rem', color: '#000000ff' }}>2. Autonomous P&L & SLA Optimization Agent</span>
+              <span style={{ color: '#10B981', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <CheckCircle2 size={14} /> COMPLETED
+              </span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0F172A', padding: '10px 14px', borderRadius: '6px' }}>
-              <span style={{ fontSize: '0.85rem', color: '#FFFF' }}>3. 100% On-site Solar Storage & BESS Microgrid</span>
-              <span style={{ color: upgraded ? '#10B981' : '#F59E0B', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                {upgraded ? '✓ COMPLETED' : '⚡ 94% IN PROGRESS'}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',border: '1px solid #d1d1d1ff', padding: '10px 14px', borderRadius: '6px' }}>
+              <span style={{ fontSize: '0.85rem', color: '#000000ff' }}>3. 100% On-site Solar Storage & BESS Microgrid</span>
+              <span style={{ color: upgraded ? '#10B981' : '#F59E0B', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {upgraded ? (
+                  <>
+                    <CheckCircle2 size={14} /> COMPLETED
+                  </>
+                ) : (
+                  '⚡ 94% IN PROGRESS'
+                )}
               </span>
             </div>
           </div>
@@ -159,8 +185,9 @@ export default function FutureReadinessPage() {
 
         {/* AI Actionable Recommendations */}
         <div className="card">
-          <div className="card-title" style={{ marginBottom: '12px' }}>
-            <span style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>🤖 AI Strategic Insight</span>
+          <div className="card-title" style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            
+            <span style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>AI Strategic Insight</span>
           </div>
           <p style={{ fontSize: '0.85rem', color: '#2b2b2bff', lineHeight: '1.5' }}>
             {upgraded

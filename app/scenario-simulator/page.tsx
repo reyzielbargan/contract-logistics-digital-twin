@@ -11,6 +11,17 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
+import {
+  Sliders,
+  Zap,
+  Sun,
+  TrendingUp,
+  DollarSign,
+  Target,
+  Factory,
+  Bot,
+  CheckCircle2
+} from 'lucide-react';
 
 type ScenarioType = 'baseline' | 'demand_spike' | 'solar_outage' | 'custom';
 
@@ -90,9 +101,10 @@ export default function ScenarioSimulatorPage() {
 
       {/* --- SIMULATION CONTROLS CARD --- */}
       <div className="card" style={{ marginBottom: '16px' }}>
-        <div className="card-title">
-          <span>⚙️ Simulation Control Sandbox</span>
-          <span className="ai-badge" style={{ backgroundColor: '#005EB8', color: '#FFF' }}>
+        <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Sliders size={18} color="#005EB8" />
+          <span>Simulation Control Sandbox</span>
+          <span className="ai-badge" style={{ backgroundColor: '#005EB8', color: '#FFF', marginLeft: 'auto' }}>
             DIGITAL TWIN MODE
           </span>
         </div>
@@ -116,10 +128,13 @@ export default function ScenarioSimulatorPage() {
               backgroundColor: scenario === 'demand_spike' ? '#002664' : '#1E293B',
               opacity: scenario === 'demand_spike' ? 1 : 0.8,
               border: scenario === 'demand_spike' ? '1px solid #005EB8' : 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
             onClick={() => handleSelectPreset('demand_spike')}
           >
-            ⚡ Simulate +50% Demand Spike
+            <Zap size={14} color="#F59E0B" /> Simulate +50% Demand Spike
           </button>
           <button
             className="sim-btn"
@@ -127,10 +142,13 @@ export default function ScenarioSimulatorPage() {
               backgroundColor: scenario === 'solar_outage' ? '#002664' : '#1E293B',
               opacity: scenario === 'solar_outage' ? 1 : 0.8,
               border: scenario === 'solar_outage' ? '1px solid #005EB8' : 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
             onClick={() => handleSelectPreset('solar_outage')}
           >
-            ☀️ Simulate Solar Outage (0%)
+            <Sun size={14} color="#EF4444" /> Simulate Solar Outage (0%)
           </button>
         </div>
 
@@ -187,11 +205,12 @@ export default function ScenarioSimulatorPage() {
         </div>
       </div>
 
-      {/* --- SIMULATION IMPACT TREND CHART (เพิ่มใหม่ตามคำขอ) --- */}
+      {/* --- SIMULATION IMPACT TREND CHART --- */}
       <div className="card" style={{ marginBottom: '16px', padding: '16px' }}>
-        <div className="card-title" style={{ marginBottom: '12px' }}>
-          <span>📈 24-Hour Simulation Trend Projection</span>
-          <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>Real-time Stress Test Analytics</span>
+        <div className="card-title" style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <TrendingUp size={18} color="#3B82F6" />
+          <span>24-Hour Simulation Trend Projection</span>
+          <span style={{ fontSize: '0.75rem', color: '#94A3B8', marginLeft: 'auto' }}>Real-time Stress Test Analytics</span>
         </div>
         <div style={{ width: '100%', height: '200px' }}>
           <ResponsiveContainer width="100%" height="100%">
@@ -213,7 +232,7 @@ export default function ScenarioSimulatorPage() {
         </div>
       </div>
 
-      {/* --- COMPACT IMPACT RESULTS CARDS (ปรับย่อขนาดลง) --- */}
+      {/* --- COMPACT IMPACT RESULTS CARDS --- */}
       <div
         style={{
           display: 'grid',
@@ -224,7 +243,10 @@ export default function ScenarioSimulatorPage() {
       >
         {/* Metric 1: Project Operational Cost */}
         <div className="card" style={{ padding: '12px 16px' }}>
-          <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Projected Daily Cost 💰</div>
+          <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>Projected Daily Cost</span>
+            <DollarSign size={16} color="#10B981" />
+          </div>
           <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: currentCost > baseCost ? '#EF4444' : '#00A79D' }}>
             ${currentCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </div>
@@ -235,7 +257,10 @@ export default function ScenarioSimulatorPage() {
 
         {/* Metric 2: Estimated SLA */}
         <div className="card" style={{ padding: '12px 16px' }}>
-          <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Estimated OTIF SLA 🎯</div>
+          <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>Estimated OTIF SLA</span>
+            <Target size={16} color="#F59E0B" />
+          </div>
           <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: currentSla < 96 ? '#EF4444' : currentSla < 99 ? '#F59E0B' : '#00A79D' }}>
             {currentSla.toFixed(1)}%
           </div>
@@ -246,8 +271,11 @@ export default function ScenarioSimulatorPage() {
 
         {/* Metric 3: Resource Load Index */}
         <div className="card" style={{ padding: '12px 16px' }}>
-          <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Warehouse Utilization 🏭</div>
-          <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: '#00A79Dป' }}>
+          <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>Warehouse Utilization</span>
+            <Factory size={16} color="#3B82F6" />
+          </div>
+          <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: '#00A79D' }}>
             {utilization}%
           </div>
           <span style={{ color: demandFactor > 130 ? '#F59E0B' : '#94A3B8', fontSize: '0.75rem' }}>
@@ -258,13 +286,18 @@ export default function ScenarioSimulatorPage() {
 
       {/* --- AI MITIGATION ACTION PLAN BOX --- */}
       <div className="card" style={{ borderLeft: '4px solid #005EB8', padding: '16px' }}>
-        <div className="card-title" style={{ marginBottom: '10px' }}>
-          <span>🤖 AI Prescriptive Action Engine</span>
-          {isMitigated ? (
-            <span style={{ color: '#00A79D', fontWeight: 'bold', fontSize: '0.8rem' }}>✓ AI OPTIMIZATION APPLIED</span>
-          ) : (
-            <span style={{ color: '#F59E0B', fontSize: '0.8rem' }}>PENDING ACTION</span>
-          )}
+        <div className="card-title" style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Bot size={18} color="#005EB8" />
+          <span>AI Prescriptive Action Engine</span>
+          <div style={{ marginLeft: 'auto' }}>
+            {isMitigated ? (
+              <span style={{ color: '#00A79D', fontWeight: 'bold', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <CheckCircle2 size={14} /> AI OPTIMIZATION APPLIED
+              </span>
+            ) : (
+              <span style={{ color: '#F59E0B', fontSize: '0.8rem' }}>PENDING ACTION</span>
+            )}
+          </div>
         </div>
 
         <div style={{ fontSize: '0.85rem', color: '#1c1c1cff', lineHeight: '1.5' }}>
