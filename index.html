@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSV Digital Twin - Control Tower 2030</title>
+    <style>
+        :root {
+            --dsv-blue: #002B49;
+            --dsv-accent: #0082C8;
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+            --text-sub: #94A3B8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: var(--dsv-blue);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 1px solid #334155;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #FFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            background-color: var(--dsv-accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        a{
+            text-decoration: none;
+            color: inherit;
+        }
+        .menu-item.active, .menu-item:hover{
+            background-color: var(--dsv-accent);
+            color: #FFF;
+        }
+
+        /* Main Content */
+        .main-content{
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .status-badge {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--success);
+        }
+
+        /* 8 Data Streams Indicator */
+        .streams-bar {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #334155;
+        }
+
+        .stream-pill {
+            background: #0F172A;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            border-left: 3px solid var(--dsv-accent);
+        }
+
+        /* Grid Dashboard */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        /* 4 Visibility Section (Predict & AI Action) */
+        .ai-recommend-box {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--dsv-accent);
+            position: relative;
+        }
+
+        .ai-badge {
+            background-color: var(--dsv-accent);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .visibility-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .v-step {
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--dsv-accent);
+        }
+
+        .v-step h4 {
+            margin: 0 0 5px 0;
+            font-size: 0.8rem;
+            color: var(--dsv-accent);
+        }
+
+        .v-step p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        /* Simulation Controls */
+        .sim-btn {
+            background-color: var(--dsv-accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .sim-btn:hover {
+            background-color: #0066a0;
+        }
+
+        /* Extra UI Helpers for Control Tower View */
+        .progress-bg {
+            background: #0F172A;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--dsv-accent);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="brand">DSV <span>Twin '30</span></div>
+        <ul class="menu-list">
+            <li class="menu-item active">
+                <a href="index.html">🌐 Control Tower</a>
+            </li>
+            <li class="menu-item">
+                <a href="solar_manage.html">☀️ Solar & Energy</a>
+            </li>
+            <li class="menu-item">
+                <a href="inventory.html">📦 Inventory & WMS</a>
+            </li>
+            <li class="menu-item">
+                <a href="ai-agent.html">🤖 AI Agent (P&L / SLA)</a>
+            </li>
+            <li class="menu-item">
+                <a href="scenario-simulator.html">🧪 Scenario Simulator</a>
+            </li>
+            <li class="menu-item">
+                <a href="future-readiness.html">💾 Future Readiness Scale</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content (Index / Global Control Tower View) -->
+    <div class="main-content">
+        
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Global Operations Control Tower</h1>
+                <span style="color: var(--text-sub); font-size: 0.85rem;">Autonomous Contract Logistics & Enterprise Digital Twin 2030</span>
+                <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+                    <span style="color: var(--text-sub); font-size: 0.85rem;">Select Facility Node:</span>
+                    <select style="background: #0F172A; color: white; padding: 6px 12px; border-radius: 6px; border: 1px solid #334155;">
+                        <option>Warehouse 01 - Main Logistics Hub (Active)</option>
+                        <option>Warehouse 02 - Cold Chain Specialized Hub</option>
+                        <option>Warehouse 03 - Cross-Dock & Fulfillment</option>
+                        <option>Warehouse 04 - Global Air & Sea Annex</option>
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                <div class="status-badge">● AI Co-Pilot & Autonomous Orchestrator Active</div>
+                <span style="font-size: 0.75rem; color: var(--text-sub);">Latency: 12ms | Real-Time Sync</span>
+            </div>
+        </div>
+
+        <!-- 8 Data Streams Status Bar (Full Enterprise Streams) -->
+        <div class="streams-bar">
+            <span style="font-size: 0.8rem; font-weight: bold;">8 Integrated Data Streams:</span>
+            <div class="stream-pill" style="border-left-color: var(--warning);">☀️ Solar Gen</div>
+            <div class="stream-pill" style="border-left-color: var(--success);">⚡ Energy Draw</div>
+            <div class="stream-pill">📦 WMS / TMS</div>
+            <div class="stream-pill">🌡️ IoT Sensors</div>
+            <div class="stream-pill" style="border-left-color: #38BDF8;">💰 Financial P&L</div>
+            <div class="stream-pill">📚 Knowledge Base</div>
+            <div class="stream-pill">📈 Client Demand</div>
+            <div class="stream-pill">👷 Workforce & AGVs</div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="grid-container">
+            
+            <div class="card">
+                <div class="card-title">Solar & Clean Energy <span>☀️</span></div>
+                <div class="metric-value">645 <span style="font-size: 1rem;">kW</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--success);">↑ 18% vs Forecast</span>
+                    <span style="color: var(--text-sub);">Grid Draw: -32%</span>
+                </div>
+                <div class="progress-bg"><div class="progress-bar" style="width: 80%; background: var(--warning);"></div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Contract Margin & Profit <span>💰</span></div>
+                <div class="metric-value">24.2% <span style="font-size: 1rem;">Margin</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--success);">+3.5% vs Contract Target</span>
+                    <span style="color: var(--text-sub);">Real-time P&L</span>
+                </div>
+                <div class="progress-bg"><div class="progress-bar" style="width: 72%; background: #38BDF8;"></div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Client SLA Fulfillment <span>🎯</span></div>
+                <div class="metric-value">99.8%</div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--success);">OTIF Compliant</span>
+                    <span style="color: var(--text-sub);">Zero Penalties</span>
+                </div>
+                <div class="progress-bg"><div class="progress-bar" style="width: 99.8%; background: var(--success);"></div></div>
+            </div>
+
+            <!-- AI 4-Level Visibility Box (Core Feature Highlight) -->
+            <div class="card ai-recommend-box">
+                <div class="card-title">
+                    <span>AI Prescriptive Engine (Live Reasoning)</span>
+                    <span class="ai-badge">PRESCRIPTIVE AI</span>
+                </div>
+
+                <div class="visibility-steps">
+                    <div class="v-step">
+                        <h4>1. What Happened</h4>
+                        <p>Cloud cover approaching at 14:00. Solar output drop predicted (-35%).</p>
+                    </div>
+                    <div class="v-step">
+                        <h4>2. Why It Happened</h4>
+                        <p>Sudden localized weather shift combined with 500 VIP express orders.</p>
+                    </div>
+                    <div class="v-step">
+                        <h4>3. What Will Happen</h4>
+                        <p>Peak electricity tariff trigger in 2 hours ($2,400 cost spike) & SLA delay risk.</p>
+                    </div>
+                    <div class="v-step" style="border-left-color: var(--success);">
+                        <h4>4. AI Recommended Action</h4>
+                        <p><strong>Switch to Battery B + Reroute 12 AGVs to VIP Lane.</strong> Saves $2,150.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <span style="font-size: 0.8rem; color: var(--text-sub);">Decision Confidence: <strong>96.4%</strong> | P&L Impact: <strong>+$2,150 Net Saved</strong></span>
+                    <div>
+                        <button class="sim-btn" onclick="alert('Action Executed! Microgrid switched to Battery B and AGVs rerouted.')">Approve & Execute AI Action</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario Simulator Widget -->
+            <div class="card">
+                <div class="card-title">What-If Scenario Engine <span>🧪</span></div>
+                <p style="font-size: 0.8rem; color: var(--text-sub); margin: 0;">Select & simulate disruption scenarios:</p>
+                <select style="background: #0F172A; color: white; padding: 8px; border-radius: 6px; border: 1px solid #334155;">
+                    <option>Scenario A: +200% E-Commerce Order Surge</option>
+                    <option>Scenario B: Solar Microgrid Outage (2 Hours)</option>
+                    <option>Scenario C: Port Congestion Transport Delay</option>
+                </select>
+                <button class="sim-btn" style="background-color: transparent; border: 1px solid var(--dsv-accent);" onclick="alert('Running Discrete-Event Simulation...')">Run Scenario Simulation</button>
+            </div>
+
+            <!-- 4 Connected Data Pillars Live Graph View -->
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-title">
+                    <span>4 Connected Data Pillars (Cross-Silo Synergy)</span>
+                    <span style="font-size: 0.75rem; color: var(--text-sub);">Real-time Knowledge Graph</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; margin-top: 5px;">
+                    <div style="background: #0F172A; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+                        <span style="font-size: 1.2rem;">⚙️</span>
+                        <div style="font-size: 0.8rem; font-weight: bold; margin-top: 4px;">Operational</div>
+                        <div style="font-size: 0.7rem; color: var(--text-sub); margin-top: 2px;">WMS, TMS, AGVs, Solar PV</div>
+                    </div>
+                    <div style="background: #0F172A; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+                        <span style="font-size: 1.2rem;">🤝</span>
+                        <div style="font-size: 0.8rem; font-weight: bold; margin-top: 4px;">Customer</div>
+                        <div style="font-size: 0.7rem; color: var(--text-sub); margin-top: 2px;">SLAs, Orders, VIP Tiers</div>
+                    </div>
+                    <div style="background: #0F172A; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+                        <span style="font-size: 1.2rem;">💰</span>
+                        <div style="font-size: 0.8rem; font-weight: bold; margin-top: 4px;">Financial</div>
+                        <div style="font-size: 0.7rem; color: var(--text-sub); margin-top: 2px;">Tariffs, P&L, Cost/Pick</div>
+                    </div>
+                    <div style="background: #0F172A; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+                        <span style="font-size: 1.2rem;">📚</span>
+                        <div style="font-size: 0.8rem; font-weight: bold; margin-top: 4px;">Knowledge</div>
+                        <div style="font-size: 0.7rem; color: var(--text-sub); margin-top: 2px;">Contracts, SOPs, Penalties</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Measurable Outcomes & ROI Card -->
+            <div class="card">
+                <div class="card-title">Measurable Outcomes <span>📈</span></div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 5px;">
+                        <span style="color: var(--text-sub);">Energy Cost Reduction:</span>
+                        <span style="color: var(--success); font-weight: bold;">-22%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 5px;">
+                        <span style="color: var(--text-sub);">Carbon Footprint (CO₂e):</span>
+                        <span style="color: var(--success); font-weight: bold;">-20%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 5px;">
+                        <span style="color: var(--text-sub);">Bottleneck Reduction:</span>
+                        <span style="color: var(--success); font-weight: bold;">-30%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--text-sub);">Picking Accuracy:</span>
+                        <span style="color: var(--success); font-weight: bold;">99.9%</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

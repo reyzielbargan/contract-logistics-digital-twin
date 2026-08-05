@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSV Digital Twin - Solar & Energy Management 2030</title>
+    <style>
+        :root {
+            --dsv-blue: #002B49;
+            --dsv-accent: #0082C8;
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+            --text-sub: #94A3B8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --solar-amber: #F59E0B;
+            --solar-glow: #FCD34D;
+            --eco-green: #10B981;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: var(--dsv-blue);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 1px solid #334155;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #FFF;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            background-color: var(--dsv-accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .menu-item a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .menu-item.active, .menu-item:hover {
+            background-color: var(--dsv-accent);
+            color: #FFF;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .status-badge {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--success);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* 8 Data Streams Indicator */
+        .streams-bar {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 10px;
+            align-items: center;
+            border: 1px solid #334155;
+            overflow-x: auto;
+        }
+
+        .stream-pill {
+            background: #0F172A;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            border-left: 3px solid var(--dsv-accent);
+            white-space: nowrap;
+        }
+
+        /* Grid Dashboard */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        /* AI Section */
+        .ai-recommend-box {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--dsv-accent);
+            position: relative;
+        }
+
+        .ai-badge {
+            background-color: var(--dsv-accent);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .visibility-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .v-step {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--dsv-accent);
+        }
+
+        .v-step h4 {
+            margin: 0 0 5px 0;
+            font-size: 0.8rem;
+            color: var(--dsv-accent);
+        }
+
+        .v-step p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        /* Controls & Buttons */
+        .sim-btn {
+            background-color: var(--dsv-accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .sim-btn:hover {
+            background-color: #0066a0;
+        }
+
+        .progress-bg {
+            background: #0F172A;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--dsv-accent);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* Custom Selector */
+        select {
+            background: #0F172A;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            outline: none;
+            font-size: 0.85rem;
+        }
+
+        /* CSS Chart Custom Style */
+        .chart-bar {
+            width: 9%;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="brand">DSV <span>TWIN '30</span></div>
+        <ul class="menu-list">
+            <li class="menu-item">
+                <a href="index.html">🌐 Control Tower</a>
+            </li>
+            <li class="menu-item active">
+                <a href="solar_manage.html">☀️ Solar & Energy</a>
+            </li>
+            <li class="menu-item">
+                <a href="inventory.html">📦 Inventory & WMS</a>
+            </li>
+            <li class="menu-item">
+                <a href="ai-agent.html">🤖 AI Agent (P&L / SLA)</a>
+            </li>
+            <li class="menu-item">
+                <a href="scenario-simulator.html">🧪 Scenario Simulator</a>
+            </li>
+            <li class="menu-item">
+                <a href="future-readiness.html">💾 Future Readiness</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Solar & Clean Energy Control Hub</h1>
+                <div style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                    <span style="color: var(--text-sub); font-size: 0.85rem;">Facility Location:</span>
+                    <select>
+                        <option>Warehouse 01 (Main Hub - Solar Roof Peak)</option>
+                        <option>Warehouse 02 (Cold Chain Unit)</option>
+                        <option>Warehouse 03 (E-Commerce Center)</option>
+                        <option>Warehouse 04 (Air & Sea Cargo Annex)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+                <div class="status-badge">
+                    <div>● Real-time AI Active</div> 
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="grid-container">
+
+            <!-- Card 3: Offset -->
+            <div class="card">
+                <div class="card-title">Grid Cost Offset & Carbon <span>🌱</span></div>
+                <div class="metric-value">$3,820 <span style="font-size: 1rem; color: var(--text-sub);">/day</span></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                    <span style="color: var(--eco-green);">↓ 32% Peak Grid Draw</span>
+                    <span style="color: var(--text-sub);">-4.2 Tons CO₂e</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-bar" style="width: 68%; background: var(--dsv-accent);"></div>
+                </div>
+            </div>
+
+
+            <!-- Solar Forecast vs Consumption Chart -->
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-title">
+                    <span>Solar Generation vs. Power Load Horizon</span>
+                    <span style="font-size: 0.75rem; color: var(--text-sub);">Real-time vs AI Prediction</span>
+                </div>
+                <div style="height: 160px; background: #0F172A; border-radius: 8px; border: 1px solid #334155; padding: 15px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-sub);">
+                        <span>800 kW</span>
+                        <span style="color: var(--solar-amber);">■ Solar Output (kW)</span>
+                        <span style="color: var(--dsv-accent);">■ Warehouse Load</span>
+                        <span style="color: var(--eco-green);">-- Grid Tariff Threshold</span>
+                    </div>
+                    
+                    <!-- CSS Visual Bar Chart -->
+                    <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 90px; padding-top: 10px;">
+                        <div class="chart-bar" style="height: 25%; background: rgba(148, 163, 184, 0.3);" title="06:00 - 200kW"></div>
+                        <div class="chart-bar" style="height: 45%; background: var(--solar-amber);" title="08:00 - 360kW"></div>
+                        <div class="chart-bar" style="height: 80%; background: var(--solar-amber);" title="10:00 - 640kW"></div>
+                        <div class="chart-bar" style="height: 98%; background: var(--solar-amber);" title="12:00 - 780kW (Peak)"></div>
+                        <div class="chart-bar" style="height: 60%; background: var(--solar-amber); border: 1px dashed var(--solar-glow);" title="14:00 - Cloud Impact"></div>
+                        <div class="chart-bar" style="height: 50%; background: var(--solar-amber);" title="16:00 - 400kW"></div>
+                        <div class="chart-bar" style="height: 30%; background: rgba(148, 163, 184, 0.3);" title="18:00 - 240kW"></div>
+                        <div class="chart-bar" style="height: 15%; background: rgba(148, 163, 184, 0.2);" title="20:00 - 120kW"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-sub);">
+                        <span>06:00</span>
+                        <span>08:00</span>
+                        <span>10:00</span>
+                        <span>12:00</span>
+                        <span>14:00</span>
+                        <span>16:00</span>
+                        <span>18:00</span>
+                        <span>20:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Energy Consumption Breakdown -->
+            <div class="card">
+                <div class="card-title">Energy Consumption Breakdown <span>⚡</span></div>
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 5px;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+                            <span>Robotics & AGV Chargers</span>
+                            <span style="font-weight: 700; color: #FFF;">38% (245 kW)</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 38%; background: var(--dsv-accent);"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+                            <span>Cold Storage Climate Control</span>
+                            <span style="font-weight: 700; color: #FFF;">32% (206 kW)</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 32%; background: #38BDF8;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+                            <span>Conveyors & LED Systems</span>
+                            <span style="font-weight: 700; color: #FFF;">18% (116 kW)</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 18%; background: var(--eco-green);"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+                            <span>EV Fleet Fast-Charging</span>
+                            <span style="font-weight: 700; color: #FFF;">12% (78 kW)</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 12%; background: var(--solar-amber);"></div></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
