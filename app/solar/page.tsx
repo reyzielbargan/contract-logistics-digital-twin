@@ -82,11 +82,11 @@ export default function SolarEnergyPage() {
       </div>
 
       {/* --- DETAILED ENERGY BREAKDOWN & WATER MANAGEMENT --- */}
-      <div className="grid-container" style={{ marginBottom: '20px' }}>
+      <div className="grid-container" style={{ marginBottom: '10px' }}>
         
         {/* Warehouse Power Consumption Breakdown */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
-          <div className="card-title" style={{ marginBottom: '14px' }}>
+          <div className="card-title" style={{ marginBottom: '10x' }}>
             <span>⚡ Warehouse Power Distribution Breakdown</span>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-sub)' }}>Real-time Load</span>
           </div>
@@ -94,7 +94,7 @@ export default function SolarEnergyPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '4px' }}>
-                <span>HVAC & Temperature Control (Cold Chain / Office)</span>
+                <span style={{ color: '#000' }}>HVAC & Temperature Control (Cold Chain / Office)</span>
                 <strong>{energyData.hvacUsage}</strong>
               </div>
               <div style={{ width: '100%', height: '8px', backgroundColor: '#0F172A', borderRadius: '4px', overflow: 'hidden' }}>
@@ -104,7 +104,7 @@ export default function SolarEnergyPage() {
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '4px' }}>
-                <span>AGV Fleet & Electric Forklift Fast Chargers</span>
+                <span style={{ color: '#000' }}>AGV Fleet & Electric Forklift Fast Chargers</span>
                 <strong>{energyData.chargingUsage}</strong>
               </div>
               <div style={{ width: '100%', height: '8px', backgroundColor: '#0F172A', borderRadius: '4px', overflow: 'hidden' }}>
@@ -114,7 +114,7 @@ export default function SolarEnergyPage() {
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '4px' }}>
-                <span>Smart LED Lighting & Sensor Network</span>
+                <span style={{ color: '#000' }}>Smart LED Lighting & Sensor Network</span>
                 <strong>{energyData.lightingUsage}</strong>
               </div>
               <div style={{ width: '100%', height: '8px', backgroundColor: '#0F172A', borderRadius: '4px', overflow: 'hidden' }}>
@@ -162,7 +162,7 @@ export default function SolarEnergyPage() {
           <span>🤖 AI Environmental Efficiency Insight</span>
           <span className="ai-badge">GREEN OPTIMIZER</span>
         </div>
-        <p style={{ fontSize: '0.85rem', color: '#CBD5E1', lineHeight: '1.5' }}>
+        <p style={{ fontSize: '0.85rem', color: '#57595bff', lineHeight: '1.5' }}>
           Rainwater collection reserves are at 85% capacity. AI has scheduled automated solar panel cleaning for tonight at 23:00, utilizing 100% harvested rainwater and BESS battery power to maintain zero-grid impact.
         </p>
       </div>

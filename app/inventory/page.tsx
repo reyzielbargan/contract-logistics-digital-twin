@@ -222,21 +222,21 @@ export default function InventoryWMSPage() {
             <tbody>
               <tr style={{ borderBottom: '1px solid #1E293B' }}>
                 <td style={{ padding: '10px', fontWeight: 'bold' }}>AGV-01</td>
-                <td style={{ padding: '10px', color: '#CBD5E1' }}>Pallet Mover</td>
+                <td style={{ padding: '10px', color: '#1b1b1bff' }}>Pallet Mover</td>
                 <td style={{ padding: '10px', color: '#10B981', fontWeight: 'bold' }}>92%</td>
                 <td style={{ padding: '10px', color: '#CBD5E1' }}>Moving Pallet #4499 to Bay 12</td>
                 <td style={{ padding: '10px', color: '#10B981' }}>● Active</td>
               </tr>
               <tr style={{ borderBottom: '1px solid #1E293B' }}>
                 <td style={{ padding: '10px', fontWeight: 'bold' }}>AGV-02</td>
-                <td style={{ padding: '10px', color: '#CBD5E1' }}>High Reach Picker</td>
+                <td style={{ padding: '10px', color: '#1b1b1bff' }}>High Reach Picker</td>
                 <td style={{ padding: '10px', color: '#10B981', fontWeight: 'bold' }}>85%</td>
                 <td style={{ padding: '10px', color: '#CBD5E1' }}>Picking SKU-8821 in Zone A</td>
                 <td style={{ padding: '10px', color: '#10B981' }}>● Active</td>
               </tr>
               <tr style={{ borderBottom: '1px solid #1E293B' }}>
                 <td style={{ padding: '10px', fontWeight: 'bold' }}>AGV-03</td>
-                <td style={{ padding: '10px', color: '#CBD5E1' }}>High Reach Picker</td>
+                <td style={{ padding: '10px', color: '#1b1b1bff' }}>High Reach Picker</td>
                 <td style={{ padding: '10px', color: '#EF4444', fontWeight: 'bold' }}>18%</td>
                 <td style={{ padding: '10px', color: '#CBD5E1' }}>Returning to Auto-Charge Station</td>
                 <td style={{ padding: '10px', color: '#F59E0B' }}>● Charging</td>

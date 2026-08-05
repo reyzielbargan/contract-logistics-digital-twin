@@ -1,5 +1,6 @@
 'use client';
 
+import { Weight } from 'lucide-react';
 import { useState } from 'react';
 
 interface PillarScore {
@@ -66,7 +67,7 @@ export default function FutureReadinessPage() {
       <div className="grid-container" style={{ marginBottom: '20px' }}>
         
         {/* Main Overall Score Card */}
-        <div className="card" style={{ gridColumn: 'span 2', background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)' }}>
+        <div className="card" style={{ gridColumn: 'span 2', background: 'var(--card-bg)' }}>
           <div className="card-title">
             <span>OVERALL MATURITY INDEX</span>
             <span className="ai-badge">DSV TWIN '30</span>
@@ -92,7 +93,7 @@ export default function FutureReadinessPage() {
             className="sim-btn"
             onClick={() => setUpgraded(!upgraded)}
             style={{
-              backgroundColor: upgraded ? '#10B981' : 'var(--dsv-accent)',
+              backgroundColor: upgraded ? '#10B981' : '#3B82F6',
               width: '100%',
             }}
           >
@@ -111,7 +112,7 @@ export default function FutureReadinessPage() {
               <span>{pillar.icon}</span>
             </div>
             <div style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: '8px 0 4px 0' }}>
-              {pillar.score.toFixed(1)} <span style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>/ {pillar.max.toFixed(1)}</span>
+              {pillar.score.toFixed(1)} <span style={{ fontSize: '0.8rem', color: '#444444' }}>/ {pillar.max.toFixed(1)}</span>
             </div>
 
             {/* Progress Bar */}
@@ -136,19 +137,19 @@ export default function FutureReadinessPage() {
         {/* Milestone Checklist */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
           <div className="card-title" style={{ marginBottom: '12px' }}>
-            <span>🚩 DSV Twin '30 Strategic Milestones</span>
+            <span style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>🚩 DSV Twin '30 Strategic Milestones</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0F172A', padding: '10px 14px', borderRadius: '6px' }}>
-              <span style={{ fontSize: '0.85rem' }}>1. Real-time Digital Twin Integration (Control Tower)</span>
+              <span style={{ fontSize: '0.85rem', color: '#FFFF' }} >1. Real-time Digital Twin Integration (Control Tower)</span>
               <span style={{ color: '#10B981', fontSize: '0.8rem', fontWeight: 'bold' }}>✓ COMPLETED</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0F172A', padding: '10px 14px', borderRadius: '6px' }}>
-              <span style={{ fontSize: '0.85rem' }}>2. Autonomous P&L & SLA Optimization Agent</span>
+              <span style={{ fontSize: '0.85rem', color: '#FFFF' }}>2. Autonomous P&L & SLA Optimization Agent</span>
               <span style={{ color: '#10B981', fontSize: '0.8rem', fontWeight: 'bold' }}>✓ COMPLETED</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0F172A', padding: '10px 14px', borderRadius: '6px' }}>
-              <span style={{ fontSize: '0.85rem' }}>3. 100% On-site Solar Storage & BESS Microgrid</span>
+              <span style={{ fontSize: '0.85rem', color: '#FFFF' }}>3. 100% On-site Solar Storage & BESS Microgrid</span>
               <span style={{ color: upgraded ? '#10B981' : '#F59E0B', fontSize: '0.8rem', fontWeight: 'bold' }}>
                 {upgraded ? '✓ COMPLETED' : '⚡ 94% IN PROGRESS'}
               </span>
@@ -159,9 +160,9 @@ export default function FutureReadinessPage() {
         {/* AI Actionable Recommendations */}
         <div className="card">
           <div className="card-title" style={{ marginBottom: '12px' }}>
-            <span>🤖 AI Strategic Insight</span>
+            <span style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>🤖 AI Strategic Insight</span>
           </div>
-          <p style={{ fontSize: '0.85rem', color: '#CBD5E1', lineHeight: '1.5' }}>
+          <p style={{ fontSize: '0.85rem', color: '#2b2b2bff', lineHeight: '1.5' }}>
             {upgraded
               ? 'Your facility has reached the maximum maturity tier for the DSV 2030 Roadmap. Zero-emission and autonomous protocols are operating at peak efficiency.'
               : 'To achieve Level 5.0 Maturity, expand BESS battery capacity by +15% and finalize EV yard truck autonomous dispatching.'}

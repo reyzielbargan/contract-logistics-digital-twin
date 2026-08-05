@@ -212,7 +212,7 @@ export default function AiAgentPage() {
                 alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
                 maxWidth: '75%',
                 backgroundColor: msg.sender === 'user' ? 'var(--dsv-accent)' : '#0F172A',
-                color: '#FFF',
+                color: '#000000ff',
                 padding: '10px 14px',
                 borderRadius: '10px',
                 border: msg.sender === 'ai' ? '1px solid #334155' : 'none',
@@ -222,7 +222,7 @@ export default function AiAgentPage() {
               <div
                 style={{
                   fontSize: '0.7rem',
-                  color: msg.sender === 'user' ? '#E0F2FE' : 'var(--text-sub)',
+                  color: msg.sender === 'user' ? '#000000ff' : 'var(--text-sub)',
                   marginTop: '4px',
                   textAlign: 'right',
                 }}

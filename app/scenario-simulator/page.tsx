@@ -149,7 +149,7 @@ export default function ScenarioSimulatorPage() {
         >
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '6px' }}>
-              <span>Order Volume Spike (Demand Load)</span>
+              <span style={{ color: '#FFF' }}>Order Volume Spike (Demand Load)</span>
               <strong style={{ color: demandFactor > 120 ? '#F59E0B' : '#FFF' }}>{demandFactor}%</strong>
             </div>
             <input
@@ -168,7 +168,7 @@ export default function ScenarioSimulatorPage() {
 
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '6px' }}>
-              <span>Solar Grid Generation Output</span>
+              <span style={{ color: '#FFF' }}>Solar Grid Generation Output</span>
               <strong style={{ color: solarCapacity < 50 ? '#EF4444' : '#00A79D' }}>{solarCapacity}%</strong>
             </div>
             <input
@@ -225,7 +225,7 @@ export default function ScenarioSimulatorPage() {
         {/* Metric 1: Project Operational Cost */}
         <div className="card" style={{ padding: '12px 16px' }}>
           <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Projected Daily Cost 💰</div>
-          <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: currentCost > baseCost ? '#EF4444' : '#FFF' }}>
+          <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: currentCost > baseCost ? '#EF4444' : '#00A79D' }}>
             ${currentCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </div>
           <span style={{ color: currentCost > baseCost ? '#EF4444' : '#00A79D', fontSize: '0.75rem' }}>
@@ -247,7 +247,7 @@ export default function ScenarioSimulatorPage() {
         {/* Metric 3: Resource Load Index */}
         <div className="card" style={{ padding: '12px 16px' }}>
           <div className="card-title" style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Warehouse Utilization 🏭</div>
-          <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: '#FFF' }}>
+          <div className="metric-value" style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0', color: '#00A79Dป' }}>
             {utilization}%
           </div>
           <span style={{ color: demandFactor > 130 ? '#F59E0B' : '#94A3B8', fontSize: '0.75rem' }}>
@@ -267,7 +267,7 @@ export default function ScenarioSimulatorPage() {
           )}
         </div>
 
-        <div style={{ fontSize: '0.85rem', color: '#CBD5E1', lineHeight: '1.5' }}>
+        <div style={{ fontSize: '0.85rem', color: '#1c1c1cff', lineHeight: '1.5' }}>
           {demandFactor > 120 || solarCapacity < 50 ? (
             <div>
               <strong>Alert Recommendation:</strong>
